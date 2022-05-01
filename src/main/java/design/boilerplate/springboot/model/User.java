@@ -34,4 +34,10 @@ public class User {
 	@Enumerated(EnumType.STRING)
 	private UserRole userRole;
 
+	@OneToOne(mappedBy = "user")
+	private Investor investor;
+
+	@OneToOne(mappedBy = "user")
+	private Startupper startupper;
+
 }

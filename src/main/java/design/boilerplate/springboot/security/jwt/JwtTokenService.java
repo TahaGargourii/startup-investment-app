@@ -3,7 +3,7 @@ package design.boilerplate.springboot.security.jwt;
 import design.boilerplate.springboot.model.User;
 import design.boilerplate.springboot.security.dto.AuthenticatedUserDto;
 import design.boilerplate.springboot.security.dto.request.LoginRequest;
-import design.boilerplate.springboot.security.dto.response.InvestorResponse;
+import design.boilerplate.springboot.security.dto.response.LoginResponse;
 import design.boilerplate.springboot.security.mapper.UserMapper;
 import design.boilerplate.springboot.security.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ public class JwtTokenService {
 
 	private final AuthenticationManager authenticationManager;
 
-	public InvestorResponse.LoginResponse getLoginResponse(LoginRequest loginRequest) {
+	public LoginResponse getLoginResponse(LoginRequest loginRequest) {
 
 		final String username = loginRequest.getUsername();
 		final String password = loginRequest.getPassword();
@@ -44,7 +44,7 @@ public class JwtTokenService {
 
 		log.info(" {} has successfully logged in!", user.getUsername());
 
-		return new InvestorResponse.LoginResponse(token);
+		return new LoginResponse(token);
 	}
 
 }

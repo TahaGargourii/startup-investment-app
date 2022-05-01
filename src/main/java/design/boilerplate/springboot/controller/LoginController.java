@@ -1,7 +1,7 @@
 package design.boilerplate.springboot.controller;
 
 import design.boilerplate.springboot.security.dto.request.LoginRequest;
-import design.boilerplate.springboot.security.dto.response.InvestorResponse;
+import design.boilerplate.springboot.security.dto.response.LoginResponse;
 import design.boilerplate.springboot.security.jwt.JwtTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +23,9 @@ public class LoginController {
 	private final JwtTokenService jwtTokenService;
 
 	@PostMapping
-	public ResponseEntity<InvestorResponse.LoginResponse> loginRequest(@Valid @RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<LoginResponse> loginRequest(@Valid @RequestBody LoginRequest loginRequest) {
 
-		final InvestorResponse.LoginResponse loginResponse = jwtTokenService.getLoginResponse(loginRequest);
+		final LoginResponse loginResponse = jwtTokenService.getLoginResponse(loginRequest);
 
 		return ResponseEntity.ok(loginResponse);
 	}

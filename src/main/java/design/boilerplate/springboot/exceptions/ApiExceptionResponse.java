@@ -19,10 +19,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ApiExceptionResponse {
 
-	private String message;
+    private Object data;
 
-	private HttpStatus status;
+    private String message;
 
-	private LocalDateTime time;
+    private HttpStatus status;
+
+    private LocalDateTime time;
 
 }

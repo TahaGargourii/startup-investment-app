@@ -19,7 +19,7 @@ public class RegistrationControllerAdvice {
 	@ExceptionHandler(RegistrationException.class)
 	ResponseEntity<ApiExceptionResponse> handleRegistrationException(RegistrationException exception) {
 
-		final ApiExceptionResponse response = new ApiExceptionResponse(exception.getErrorMessage(), HttpStatus.BAD_REQUEST, LocalDateTime.now());
+		final ApiExceptionResponse response = new ApiExceptionResponse(null, exception.getErrorMessage(), HttpStatus.BAD_REQUEST, LocalDateTime.now());
 
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}

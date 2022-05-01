@@ -5,7 +5,6 @@ import design.boilerplate.springboot.model.UserRole;
 import design.boilerplate.springboot.repository.UserRepository;
 import design.boilerplate.springboot.security.dto.AuthenticatedUserDto;
 import design.boilerplate.springboot.security.dto.request.RegistrationRequest;
-import design.boilerplate.springboot.security.dto.response.InvestorResponse;
 import design.boilerplate.springboot.security.mapper.UserMapper;
 import design.boilerplate.springboot.service.UserValidationService;
 import design.boilerplate.springboot.utils.GeneralMessageAccessor;
@@ -41,7 +40,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public InvestorResponse.RegistrationResponse registration(RegistrationRequest registrationRequest) {
+	public User registration(RegistrationRequest registrationRequest) {
 
 		userValidationService.validateUser(registrationRequest);
 
@@ -56,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
 		log.info("{} registered successfully!", username);
 
-		return new InvestorResponse.RegistrationResponse(registrationSuccessMessage);
+		return user;
 	}
 
 	@Override

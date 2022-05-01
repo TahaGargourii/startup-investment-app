@@ -29,32 +29,5 @@ public class InvestorResponse {
 	private PortfolioResponse portfolio;
 
 
-	/**
-	 * Created on Ağustos, 2020
-	 *
-	 * @author Faruk
-	 */
-	@Getter
-	@Setter
-	@AllArgsConstructor
-	public static class LoginResponse {
 
-		private String token;
-
-	}
-
-	/**
-	 * Created on Ağustos, 2020
-	 *
-	 * @author Faruk
-	 */
-	@Getter
-	@Setter
-	@NoArgsConstructor
-	@AllArgsConstructor
-	public static class RegistrationResponse {
-
-		private String message;
-
-	}
 }
