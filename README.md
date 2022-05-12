@@ -1,7 +1,9 @@
-# Spring Boot Boilerplate
- *Spring Boot Boilerplate* is a **starter kit**. This project is a very simple and useful.
- 
-## Technologies 
+# Spring Boot startupInvestment
+
+*Spring Boot startupInvestment* is a **starter kit**. This project is a very simple and useful.
+
+## Technologies
+
 - Spring Boot (v2.3.3)
 - Spring Data JPA
 - Spring Validation
@@ -17,16 +19,16 @@ Navigate to the root of the project. For building the project using command line
 
 ``` mvn clean install```
 
-Run service in command line. Navigate to *target* directory. 
+Run service in command line. Navigate to *target* directory.
 
-``` java -jar spring-boot-boilerplate.jar ```
+``` java -jar spring-boot-startupInvestment.jar ```
 
 ### Todos
 
- - [x] Will be add new boilerplate design for other softwares. -> [For Angular]
+- [x] Will be add new startupInvestment design for other softwares. -> [For Angular]
  
 ### License
 
 Apache License 2.0
 
-   [For Angular]: <https://github.com/Genc/angular-boilerplate>
+[For Angular]: <https://github.com/Genc/angular-startupInvestment>
