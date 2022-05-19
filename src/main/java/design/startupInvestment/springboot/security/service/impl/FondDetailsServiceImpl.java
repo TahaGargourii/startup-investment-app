@@ -1,10 +1,7 @@
 package design.startupInvestment.springboot.security.service.impl;
 
 import design.startupInvestment.springboot.exceptions.ApiResponse;
-import design.startupInvestment.springboot.model.Fond;
-import design.startupInvestment.springboot.model.Investor;
-import design.startupInvestment.springboot.model.Startup;
-import design.startupInvestment.springboot.model.User;
+import design.startupInvestment.springboot.model.*;
 import design.startupInvestment.springboot.repository.FondRepository;
 import design.startupInvestment.springboot.repository.InvestorRepository;
 import design.startupInvestment.springboot.repository.StartupRepository;
@@ -18,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -48,11 +47,11 @@ public class FondDetailsServiceImpl implements FondService {
 
     public ApiResponse getAllFonds(String type, String capTable) {
         try {
-        /*    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            User user = userRepository.findByUsername(((UserDetails) principal).getUsername());*/
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User user = userRepository.findByUsername(((UserDetails) principal).getUsername());
             List<FondResponse> fondResponses = new ArrayList<>();
-         /*   if (user != null) {
-                if (user.getInvestor() != null && user.getUserRole().equals(UserRole.INVESTOR)) {*/
+            if (user != null) {
+                if (user.getInvestor() != null && user.getUserRole().equals(UserRole.INVESTOR)) {
             List<Fond> fonds = fondRepository.findAll();
             if (!fonds.isEmpty()) {
                 for (Fond fond : fonds) {
@@ -61,10 +60,10 @@ public class FondDetailsServiceImpl implements FondService {
                 }
                 return new ApiResponse(fondResponses, null, HttpStatus.OK, LocalDateTime.now());
             }
-               /* } else {
+                } else {
                     return new ApiResponse(null, "USER IS NOT AN INVESTOR", HttpStatus.BAD_REQUEST, LocalDateTime.now());
-                }*/
-            /* }*/
+                }
+             }
             return new ApiResponse(null, null, HttpStatus.NO_CONTENT, LocalDateTime.now());
         } catch (Exception e) {
             return new ApiResponse(null, null, HttpStatus.NO_CONTENT, LocalDateTime.now());
@@ -98,9 +97,9 @@ public class FondDetailsServiceImpl implements FondService {
 
     public ApiResponse createFondByStartup(FondRequest fondRequest) {
         try {
-            ///  User user = userService.getConnectedStartupper();
-            //Startup userStartup = startupRepository.findStartupByStartupper(user.getStartupper());
-            //  if (user != null) {
+            User user = userService.getConnectedStartupper();
+            Startup userStartup = startupRepository.findStartupByStartupper(user.getStartupper());
+              if (user != null) {
             Optional<Startup> startup = startupRepository.findById(fondRequest.getStartupId());
             Optional<Investor> investor = investorRepository.findById(fondRequest.getInvestorId());
             Fond fond = FondMapper.INSTANCE.convertToFond(fondRequest);
@@ -109,9 +108,9 @@ public class FondDetailsServiceImpl implements FondService {
             startup.get().setPortfolio(investor.get().getPortfolio());
             fondRepository.save(fond);
             return new ApiResponse(fond, "FOND CREATED", HttpStatus.OK, LocalDateTime.now());
-         /*   } else {
+            } else {
                 return new ApiResponse(null, "USER IS NOT AN INVESTOR", HttpStatus.BAD_REQUEST, LocalDateTime.now());
-            }*/
+            }
         } catch (Exception e) {
             return new ApiResponse(null, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
         }

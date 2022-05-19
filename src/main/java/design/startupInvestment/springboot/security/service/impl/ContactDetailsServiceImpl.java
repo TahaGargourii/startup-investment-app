@@ -48,7 +48,7 @@ public class ContactDetailsServiceImpl implements ContactService {
     public ApiResponse getAllContacts() {
         try {
             List<ContactResponse> contactResponses = new ArrayList<>();
-/*            User userInvestor = userService.getConnectedInvestor();
+            User userInvestor = userService.getConnectedInvestor();
             User userStartupper = userService.getConnectedStartupper();
             List<Contact> contacts = new ArrayList<>();
             if (userInvestor != null) {
@@ -57,9 +57,7 @@ public class ContactDetailsServiceImpl implements ContactService {
                 contacts = contactRepository.findAllByStartupper(userStartupper.getStartupper());
             } else {
                 return new ApiResponse(null, "UNEXISTANT USER", HttpStatus.BAD_REQUEST, LocalDateTime.now());
-            }*/
-
-            List<Contact> contacts = contactRepository.findAll();
+            }
             if (!contacts.isEmpty()) {
                 for (Contact contact : contacts) {
                     ContactResponse contactResponse = ContactMapper.INSTANCE.convertToContactResponse(contact);
@@ -77,39 +75,38 @@ public class ContactDetailsServiceImpl implements ContactService {
     @Override
     public ApiResponse getContactById(long id) {
         try {
-           /* User user = userService.getConnectedStartupper();
-            if (user != null) {*/
+            User user = userService.getConnectedStartupper();
+            if (user != null) {
             Optional<Contact> contact = contactRepository.findById(id);
             if (contact.isPresent()) {
                 ContactResponse contactResponse = ContactMapper.INSTANCE.convertToContactResponse(contact.get());
                 return new ApiResponse(contactResponse, null, HttpStatus.OK, LocalDateTime.now());
-            } /*else {
+            } else {
                     return new ApiResponse(null, "CONTACT DOES NOT EXIST", HttpStatus.BAD_REQUEST, LocalDateTime.now());
                 }
             } else {
                 return new ApiResponse(null, "USER IS NOT AN INVESTOR", HttpStatus.BAD_REQUEST, LocalDateTime.now());
 
-            }*/
-            return new ApiResponse(null, null, HttpStatus.OK, LocalDateTime.now());
+            }
+
         } catch (Exception e) {
-            return null;
+            return new ApiResponse(null, e.getMessage(), HttpStatus.OK, LocalDateTime.now());
         }
     }
 
     @Override
     public ApiResponse createContact(ContactRequest contactRequest) {
         try {
-         /* User userInvestor = userService.getConnectedInvestor();
+          User userInvestor = userService.getConnectedInvestor();
             User userStartupper = userService.getConnectedStartupper();
-         */
             Contact contact = ContactMapper.INSTANCE.convertToContact(contactRequest);
-        /*    if (userInvestor != null) {
+            if (userInvestor != null) {
                 contact.setInvestor(userInvestor.getInvestor());
             } else if (userStartupper != null) {
                 contact.setStartupper(userStartupper.getStartupper());
             } else {
                 return new ApiResponse(null, "UNEXISTANT USER", HttpStatus.BAD_REQUEST, LocalDateTime.now());
-            }*/
+            }
             contactRepository.save(contact);
             return new ApiResponse(null, "CONTACT CREATED", HttpStatus.OK, LocalDateTime.now());
         } catch (Exception e) {
@@ -120,17 +117,17 @@ public class ContactDetailsServiceImpl implements ContactService {
     @Override
     public ApiResponse updateContact(long id, ContactRequest contactRequest) {
         try {
-            /*User user = userService.getConnectedInvestor();
-            if (user != null) {*/
+            User user = userService.getConnectedInvestor();
+            if (user != null) {
             Optional<Contact> contactData = contactRepository.findById(id);
             if (contactData.isPresent()) {
                 Contact _contact = contactData.get();
                 contactRepository.save(_contact);
                 return new ApiResponse(_contact, "CONTACTS IS UPDATED", HttpStatus.OK, LocalDateTime.now());
-            } /*else {
+            } else {
                     return new ApiResponse(null, "CONTACT DOES NOT EXIST", HttpStatus.BAD_REQUEST, LocalDateTime.now());
                 }
-            }*/
+            }
             return new ApiResponse(null, "USER IS NOT AN INVESTOR", HttpStatus.BAD_REQUEST, LocalDateTime.now());
         } catch (Exception e) {
             return new ApiResponse(null, "NO UPDATE", HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
@@ -141,17 +138,16 @@ public class ContactDetailsServiceImpl implements ContactService {
     @Override
     public ApiResponse deleteContact(long id) {
         try {
-            /*User user = userService.getConnectedStartupper();
-            if (user != null) {*/
+            User user = userService.getConnectedStartupper();
+            if (user != null) {
             Optional<Contact> contact = contactRepository.findById(id);
             if (contact.isPresent()) {
                 contactRepository.deleteById(id);
                 return new ApiResponse(null, "CONTACT IS DELETED", HttpStatus.OK, LocalDateTime.now());
             }
-          /*  } else {
+            } else {
                 return new ApiResponse(null, "USER IS NOT AN CONTACT", HttpStatus.BAD_REQUEST, LocalDateTime.now());
             }
-*/
             return new ApiResponse(null, null, HttpStatus.OK, LocalDateTime.now());
         } catch (Exception e) {
             return new ApiResponse(null, "USER IS NOT AN CONTACT", HttpStatus.BAD_REQUEST, LocalDateTime.now());

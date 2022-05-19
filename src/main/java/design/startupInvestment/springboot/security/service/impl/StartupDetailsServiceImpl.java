@@ -45,13 +45,11 @@ public class StartupDetailsServiceImpl implements StartupService {
 
     public ApiResponse getAllStartups() {
         try {
-      /*      Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             design.startupInvestment.springboot.model.User user = userRepository.findByUsername(((UserDetails) principal).getUsername());
-           */
             List<StartupResponse> startupResponses = new ArrayList<>();
-           /* if (user != null) {
+            if (user != null) {
                 if (user.getStartupper() != null && user.getUserRole().equals(UserRole.STARTUPPER)) {
-                   */
             List<Startup> startups = startupRepository.findAll();
             if (!startups.isEmpty()) {
                 for (Startup startup : startups) {
@@ -60,10 +58,10 @@ public class StartupDetailsServiceImpl implements StartupService {
                 }
                 return new ApiResponse(startupResponses, null, HttpStatus.OK, LocalDateTime.now());
             }
-               /* } else {
+                } else {
                     return new ApiResponse(null, "USER IS NOT AN STARTUP", HttpStatus.BAD_REQUEST, LocalDateTime.now());
-                }*/
-            /*    }*/
+                }
+                }
             return new ApiResponse(null, null, HttpStatus.NO_CONTENT, LocalDateTime.now());
         } catch (Exception e) {
             return new ApiResponse(null, "USER IS NOT AN STARTUP", HttpStatus.BAD_REQUEST, LocalDateTime.now());

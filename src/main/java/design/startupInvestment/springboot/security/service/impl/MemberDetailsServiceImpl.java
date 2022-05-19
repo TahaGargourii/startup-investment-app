@@ -17,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -50,8 +52,8 @@ public class MemberDetailsServiceImpl implements MemberService {
     public ApiResponse getAllMembers() {
         try {
             List<MemberResponse> memberResponses = new ArrayList<>();
-          /*  User user = userService.getConnectedStartupper();
-            if (user != null) {*/
+            User user = userService.getConnectedStartupper();
+            if (user != null) {
             List<Member> members = memberRepository.findAll();
             if (!members.isEmpty()) {
                 for (Member member : members) {
@@ -60,12 +62,12 @@ public class MemberDetailsServiceImpl implements MemberService {
                 }
             }
             return new ApiResponse(memberResponses, null, HttpStatus.OK, LocalDateTime.now());
-        /*    } else {
+            } else {
                 return new ApiResponse(null, "USER IS NOT AN INVESTOR", HttpStatus.BAD_REQUEST, LocalDateTime.now());
-            }*/
+            }
 
         } catch (Exception e) {
-            return new ApiResponse(null, null, HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
+            return new ApiResponse(null, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
         }
     }
 
@@ -81,35 +83,35 @@ public class MemberDetailsServiceImpl implements MemberService {
                     return new ApiResponse(null, "MEMBER DOES NOT EXIST", HttpStatus.BAD_REQUEST, LocalDateTime.now());
                 }
             } else {
-                return new ApiResponse(null, "USER IS NOT AN INVESTOR", HttpStatus.BAD_REQUEST, LocalDateTime.now());
+                return new ApiResponse(null, "USER IS NOT AN Startupper", HttpStatus.BAD_REQUEST, LocalDateTime.now());
 
             }
 
         } catch (Exception e) {
-            return null;
+            return new ApiResponse(null, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
+
         }
     }
 
     @Override
     public ApiResponse createMember(MemberRequest memberRequest) {
         try {
-            /*User user = userService.getConnectedStartupper();
-            if (user != null) {*/
-            Optional<Team> team = teamRepository.findById(memberRequest.getTeamId());
-            if (team.isPresent()) {
-                Member member = MemberMapper.INSTANCE.convertToMember(memberRequest);
-                member.setTeam(team.get());
-                memberRepository.save(member);
-                return new ApiResponse(member, "MEMBER CREATED", HttpStatus.OK, LocalDateTime.now());
-            }  /*else {
+            User user = userService.getConnectedStartupper();
+            if (user != null) {
+                Optional<Team> team = teamRepository.findById(memberRequest.getTeamId());
+                if (team.isPresent()) {
+                    Member member = MemberMapper.INSTANCE.convertToMember(memberRequest);
+                    member.setTeam(team.get());
+                    memberRepository.save(member);
+                    return new ApiResponse(member, "MEMBER CREATED", HttpStatus.OK, LocalDateTime.now());
+                } else {
                     return new ApiResponse(null, "TEAM DOES NOT EXIST", HttpStatus.OK, LocalDateTime.now());
                 }
             } else {
-                return new ApiResponse(null, "USER IS NOT AN INVESTOR", HttpStatus.BAD_REQUEST, LocalDateTime.now());
-            }*/
-            return new ApiResponse(null, "MEMBER NO CREATION", HttpStatus.OK, LocalDateTime.now());
+                return new ApiResponse(null, "USER IS NOT AN Startupper", HttpStatus.BAD_REQUEST, LocalDateTime.now());
+            }
         } catch (Exception e) {
-            return null;
+            return new ApiResponse(null, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
         }
     }
 
@@ -127,9 +129,9 @@ public class MemberDetailsServiceImpl implements MemberService {
                     return new ApiResponse(null, "MEMBER DOES NOT EXIST", HttpStatus.BAD_REQUEST, LocalDateTime.now());
                 }
             }
-            return new ApiResponse(null, "USER IS NOT AN INVESTOR", HttpStatus.BAD_REQUEST, LocalDateTime.now());
+            return new ApiResponse(null, "USER IS NOT AN Startupper", HttpStatus.BAD_REQUEST, LocalDateTime.now());
         } catch (Exception e) {
-            return new ApiResponse(null, "NO UPDATE", HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
+            return new ApiResponse(null, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
         }
     }
 
@@ -145,13 +147,12 @@ public class MemberDetailsServiceImpl implements MemberService {
                     return new ApiResponse(null, "MEMBER IS DELETED", HttpStatus.OK, LocalDateTime.now());
                 }
             } else {
-                return new ApiResponse(null, "USER IS NOT AN MEMBER", HttpStatus.BAD_REQUEST, LocalDateTime.now());
+                return new ApiResponse(null, "USER IS NOT AN Startupper", HttpStatus.BAD_REQUEST, LocalDateTime.now());
             }
 
             return new ApiResponse(null, null, HttpStatus.OK, LocalDateTime.now());
         } catch (Exception e) {
-            return new ApiResponse(null, "USER IS NOT AN MEMBER", HttpStatus.BAD_REQUEST, LocalDateTime.now());
-
+            return new ApiResponse(null, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
         }
 
     }
@@ -159,22 +160,20 @@ public class MemberDetailsServiceImpl implements MemberService {
     @Override
     public ApiResponse deleteAllMembers() {
         try {
-          /*  Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            User user = userRepository.findByUsername(((UserDetails) principal).getUsername());
+            User user = userService.getConnectedStartupper();
             if (user != null) {
-                if (user.getInvestor() != null && user.getUserRole().equals(UserRole.INVESTOR)) {
-                    List<Member> members = memberRepository.findAll();
-                    if (!members.isEmpty()) {*/
-            memberRepository.deleteAll();
-            return new ApiResponse(null, "ALL MEMBERS ARE DELETED", HttpStatus.OK, LocalDateTime.now());
-                  /*  }
-                } else {
-                    return new ApiResponse(null, "USER IS NOT AN MEMBER", HttpStatus.BAD_REQUEST, LocalDateTime.now());
+                List<Member> members = memberRepository.findAll();
+                if (!members.isEmpty()) {
+                    memberRepository.deleteAll();
+                    return new ApiResponse(null, "ALL MEMBERS ARE DELETED", HttpStatus.OK, LocalDateTime.now());
                 }
-            }*/
-            //return new ApiResponse(null, null, HttpStatus.OK, LocalDateTime.now());
+            } else {
+                return new ApiResponse(null, "USER IS NOT AN Startupper", HttpStatus.BAD_REQUEST, LocalDateTime.now());
+            }
+
+            return new ApiResponse(null, null, HttpStatus.NO_CONTENT, LocalDateTime.now());
         } catch (Exception e) {
-            return new ApiResponse(null, "USER IS NOT AN MEMBER", HttpStatus.BAD_REQUEST, LocalDateTime.now());
+            return new ApiResponse(null, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
 
         }
     }

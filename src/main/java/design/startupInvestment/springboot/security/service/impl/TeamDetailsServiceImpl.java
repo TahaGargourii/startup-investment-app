@@ -51,31 +51,29 @@ public class TeamDetailsServiceImpl implements TeamService {
     public ApiResponse getAllTeams() {
         try {
             List<TeamResponse> teamResponses = new ArrayList<>();
-           /* User user = userService.getConnectedStartupper();
-            if (user != null) {*/
-            List<Team> teams = teamRepository.findAll();
-            if (!teams.isEmpty()) {
-                for (Team team : teams) {
-                    TeamResponse teamResponse = TeamMapper.INSTANCE.convertToTeamResponse(team);
-                    teamResponses.add(teamResponse);
+            User user = userService.getConnectedStartupper();
+            if (user != null) {
+                List<Team> teams = teamRepository.findAll();
+                if (!teams.isEmpty()) {
+                    for (Team team : teams) {
+                        TeamResponse teamResponse = TeamMapper.INSTANCE.convertToTeamResponse(team);
+                        teamResponses.add(teamResponse);
+                    }
                 }
-            }
-            return new ApiResponse(teamResponses, null, HttpStatus.OK, LocalDateTime.now());
-          /*   } else {
+                return new ApiResponse(teamResponses, null, HttpStatus.OK, LocalDateTime.now());
+            } else {
                 return new ApiResponse(null, "USER IS NOT AN STARTUPPER", HttpStatus.BAD_REQUEST, LocalDateTime.now());
-            }*/
+            }
         } catch (Exception e) {
-            return new ApiResponse(null, null, HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
+            return new ApiResponse(null, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
         }
     }
 
     @Override
     public ApiResponse getTeamById(long id) {
         try {
-            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            design.startupInvestment.springboot.model.User user = userRepository.findByUsername(((UserDetails) principal).getUsername());
+            User user = userService.getConnectedStartupper();
             if (user != null) {
-                if (user.getInvestor() != null && user.getUserRole().equals(UserRole.INVESTOR)) {
                     Optional<Team> team = teamRepository.findById(id);
                     if (team.isPresent()) {
                         return new ApiResponse(team.get(), null, HttpStatus.OK, LocalDateTime.now());
@@ -83,53 +81,48 @@ public class TeamDetailsServiceImpl implements TeamService {
                         return new ApiResponse(null, "TEAM DOES NOT EXIST", HttpStatus.BAD_REQUEST, LocalDateTime.now());
                     }
                 } else {
-                    return new ApiResponse(null, "USER IS NOT AN INVESTOR", HttpStatus.BAD_REQUEST, LocalDateTime.now());
+                    return new ApiResponse(null, "USER IS NOT AN STARTUPPER", HttpStatus.BAD_REQUEST, LocalDateTime.now());
                 }
-            }
-            return new ApiResponse(null, "NO CREATION", HttpStatus.NO_CONTENT, LocalDateTime.now());
         } catch (Exception e) {
-            return null;
+            return new ApiResponse(null, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
         }
     }
 
     @Override
     public ApiResponse createTeam(TeamRequest teamRequest) {
         try {
-           /* User user = userService.getConnectedStartupper();
-            if (user != null) {*/
-            Team team = TeamMapper.INSTANCE.convertToTeam(teamRequest);
-            teamRepository.save(team);
-            return new ApiResponse(team, "TEAM CREATED", HttpStatus.OK, LocalDateTime.now());
-            /*} else {
-                return new ApiResponse(null, "USER IS NOT AN INVESTOR", HttpStatus.BAD_REQUEST, LocalDateTime.now());
-            }*/
+            User user = userService.getConnectedStartupper();
+            if (user != null) {
+                Team team = TeamMapper.INSTANCE.convertToTeam(teamRequest);
+                teamRepository.save(team);
+                return new ApiResponse(team, "TEAM CREATED", HttpStatus.OK, LocalDateTime.now());
+            } else {
+                return new ApiResponse(null, "USER IS NOT AN STARTUPPER", HttpStatus.BAD_REQUEST, LocalDateTime.now());
+            }
         } catch (Exception e) {
-            return null;
+            return new ApiResponse(null, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
         }
     }
 
     @Override
     public ApiResponse updateTeam(long id, TeamRequest teamRequest) {
         try {
-            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            design.startupInvestment.springboot.model.User user = userRepository.findByUsername(((UserDetails) principal).getUsername());
+            User user = userService.getConnectedStartupper();
             if (user != null) {
-                if (user.getInvestor() != null && user.getUserRole().equals(UserRole.INVESTOR)) {
-                    Optional<Team> teamData = teamRepository.findById(id);
-                    if (teamData.isPresent()) {
-                        Team _team = teamData.get();
-                        //_team.setSize(teamRequest.getSize());
-                        teamRepository.save(_team);
-                        return new ApiResponse(_team, "TEAMS IS UPDATED", HttpStatus.OK, LocalDateTime.now());
-                    } else {
-                        return new ApiResponse(null, "TEAM DOES NOT EXIST", HttpStatus.BAD_REQUEST, LocalDateTime.now());
-                    }
+                Optional<Team> teamData = teamRepository.findById(id);
+                if (teamData.isPresent()) {
+                    Team _team = teamData.get();
+                    //_team.setSize(teamRequest.getSize());
+                    teamRepository.save(_team);
+                    return new ApiResponse(_team, "TEAMS IS UPDATED", HttpStatus.OK, LocalDateTime.now());
+                } else {
+                    return new ApiResponse(null, "TEAM DOES NOT EXIST", HttpStatus.BAD_REQUEST, LocalDateTime.now());
                 }
-                return new ApiResponse(null, "USER IS NOT AN INVESTOR", HttpStatus.BAD_REQUEST, LocalDateTime.now());
+            } else {
+                return new ApiResponse(null, "USER IS NOT AN STARTUPPER", HttpStatus.BAD_REQUEST, LocalDateTime.now());
             }
-            return new ApiResponse(null, "NO UPDATE", HttpStatus.NO_CONTENT, LocalDateTime.now());
         } catch (Exception e) {
-            return new ApiResponse(null, "NO UPDATE", HttpStatus.NO_CONTENT, LocalDateTime.now());
+            return new ApiResponse(null, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
         }
     }
 
@@ -137,10 +130,8 @@ public class TeamDetailsServiceImpl implements TeamService {
     @Override
     public ApiResponse deleteTeam(long id) {
         try {
-            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            design.startupInvestment.springboot.model.User user = userRepository.findByUsername(((UserDetails) principal).getUsername());
+            User user = userService.getConnectedStartupper();
             if (user != null) {
-                if (user.getInvestor() != null && user.getUserRole().equals(UserRole.INVESTOR)) {
                     Optional<Team> team = teamRepository.findById(id);
                     if (team.isPresent()) {
                         teamRepository.deleteById(id);
@@ -149,10 +140,10 @@ public class TeamDetailsServiceImpl implements TeamService {
                 } else {
                     return new ApiResponse(null, "USER IS NOT AN TEAM", HttpStatus.BAD_REQUEST, LocalDateTime.now());
                 }
-            }
+
             return new ApiResponse(null, null, HttpStatus.OK, LocalDateTime.now());
         } catch (Exception e) {
-            return new ApiResponse(null, "USER IS NOT AN TEAM", HttpStatus.BAD_REQUEST, LocalDateTime.now());
+            return new ApiResponse(null, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
 
         }
 
@@ -162,21 +153,19 @@ public class TeamDetailsServiceImpl implements TeamService {
     public ApiResponse deleteAllTeams() {
         try {
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            User user = userRepository.findByUsername(((UserDetails) principal).getUsername());
+            User user = userService.getConnectedStartupper();
             if (user != null) {
-                if (user.getInvestor() != null && user.getUserRole().equals(UserRole.INVESTOR)) {
                     List<Team> teams = teamRepository.findAll();
                     if (!teams.isEmpty()) {
                         teamRepository.deleteAll();
                         return new ApiResponse(null, "ALL TEAMS ARE DELETED", HttpStatus.OK, LocalDateTime.now());
                     }
                 } else {
-                    return new ApiResponse(null, "USER IS NOT AN TEAM", HttpStatus.BAD_REQUEST, LocalDateTime.now());
+                return new ApiResponse(null, "USER IS NOT AN STARTUPPER", HttpStatus.BAD_REQUEST, LocalDateTime.now());
                 }
-            }
-            return new ApiResponse(null, null, HttpStatus.OK, LocalDateTime.now());
+            return new ApiResponse(null, null, HttpStatus.NO_CONTENT, LocalDateTime.now());
         } catch (Exception e) {
-            return new ApiResponse(null, "USER IS NOT AN TEAM", HttpStatus.BAD_REQUEST, LocalDateTime.now());
+            return new ApiResponse(null, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
 
         }
     }
