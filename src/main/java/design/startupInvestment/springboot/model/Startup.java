@@ -38,6 +38,11 @@ public class Startup {
 	private Portfolio portfolio;
 
 
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "income_id", referencedColumnName = "id")
+	private Income income;
+
+
 
 
 }
