@@ -30,6 +30,14 @@ import java.sql.Date;
 
 	private String field;
 
+	private String fileDownloadUri;
+
+	private String fileType;
+
+	private long size;
+
+
+
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "startupper_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)

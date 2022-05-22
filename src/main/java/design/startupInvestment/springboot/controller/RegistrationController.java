@@ -18,12 +18,12 @@ import javax.validation.Valid;
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/register")
+/*@RequestMapping("/register")*/
 public class RegistrationController {
 
 	private final UserService userService;
 
-	@PostMapping
+/*	@PostMapping*/
 	public ResponseEntity<User> registrationRequest(@Valid @RequestBody RegistrationRequest registrationRequest) {
 
 		final User registrationResponse = userService.registration(registrationRequest);

@@ -18,27 +18,18 @@ import java.util.Optional;
  
  * @author taha
  */
-@RestController
-@CrossOrigin
+/*@RestController
+@CrossOrigin*/
 public class UserController {
 
+/*
 	@Autowired
 	UserRepository userRepository;
 	StartupperMapper startupperMapper;
 	InvestorMapper investorMapper;
+*/
 
-	@GetMapping("/users/{id}")
-	public ResponseEntity<UserResponse> getUserById(@PathVariable("id") long id) {
-		Optional<User> user = userRepository.findById(id);
-		
-		if (user.isPresent()) {
-			//UserResponse userResponse = UserMapper.INSTANCE.convertToUserResponse(user.get());
-			//return new ResponseEntity<>(userResponse, HttpStatus.OK);
-			return null;
-		} else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-	}
+
 
 /*	@PutMapping("/users/{id}")
 	public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody User user) {
@@ -55,6 +46,7 @@ public class UserController {
 		}
 	}*/
 
+/*
 	@DeleteMapping("/users/{id}")
 	public ResponseEntity<ApiResponse> deleteUser(@PathVariable("id") long id) {
 		try {
@@ -70,6 +62,7 @@ public class UserController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
+*/
 
 
 

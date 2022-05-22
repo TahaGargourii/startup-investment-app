@@ -16,7 +16,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -43,7 +47,7 @@ public class FileDetailsServiceImpl implements FileService {
     @Autowired
     UserService userService;
 
-    public ApiResponse getAllFiles(String fileName, String field, Date dateOfUpload) {
+    public ApiResponse getAllFiles() {
         try {
             List<FileResponse> fileResponses = new ArrayList<>();
             User user = userService.getConnectedStartupper();
@@ -84,76 +88,6 @@ public class FileDetailsServiceImpl implements FileService {
         }
     }
 
-    public ApiResponse createFile(FileRequest fileRequest) {
-        try {
-            User user = userService.getConnectedStartupper();
-            if (user != null) {
-                File file = FileMapper.INSTANCE.convertToFile(fileRequest);
-                file.setStartupper(user.getStartupper());
-                fileRepository.save(file);
-                return new ApiResponse(null, "FILE CREATED", HttpStatus.OK, LocalDateTime.now());
-            } else {
-                return new ApiResponse(null, "USER IS NOT AN STARTUPPER", HttpStatus.BAD_REQUEST, LocalDateTime.now());
-            }
-        } catch (Exception e) {
-            return new ApiResponse(null, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
-        }
-    }
-
-    public ApiResponse updateFile(long id, FileRequest fileRequest) {
-        try {
-            User user = userService.getConnectedStartupper();
-            if (user != null) {
-                Optional<File> fileData = fileRepository.findById(id);
-                if (fileData.isPresent()) {
-                    File file = fileData.get();
-                    file.setFileName(fileRequest.getFileName());
-                    file.setField(fileRequest.getField());
-                    file.setDateOfUpload(fileRequest.getDateOfUpload());
-                    fileRepository.save(file);
-                    return new ApiResponse(file, "FILES IS UPDATED", HttpStatus.OK, LocalDateTime.now());
-                } else {
-                    return new ApiResponse(null, "FILE DOES NOT EXIST", HttpStatus.BAD_REQUEST, LocalDateTime.now());
-                }
-            } else {
-                return new ApiResponse(null, "USER IS NOT AN STARTUPPER", HttpStatus.BAD_REQUEST, LocalDateTime.now());
-            }
-        } catch (Exception e) {
-            return new ApiResponse(null, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
-        }
-    }
-
-
-    public ApiResponse deleteAllFilesByStartupper() {
-        try {
-            User user = userService.getConnectedStartupper();
-            if (user != null) {
-                fileRepository.deleteAllFilesByStartupper(user.getStartupper());
-                return new ApiResponse(null, "FILE IS DELETED", HttpStatus.OK, LocalDateTime.now());
-
-            } else {
-                return new ApiResponse(null, "USER IS NOT AN STARTUPPER", HttpStatus.BAD_REQUEST, LocalDateTime.now());
-            }
-        } catch (Exception e) {
-            return new ApiResponse(null, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
-        }
-    }
-
-    public ApiResponse deleteFileByIdAndStartupper(Long id) {
-        try {
-            User user = userService.getConnectedStartupper();
-            if (user != null) {
-                fileRepository.deleteFileByIdAndStartupper(id, user.getStartupper());
-                return new ApiResponse(null, "ALL FILES ARE DELETED", HttpStatus.OK, LocalDateTime.now());
-
-            } else {
-                return new ApiResponse(null, "USER IS NOT AN STARTUPPER", HttpStatus.UNAUTHORIZED, LocalDateTime.now());
-            }
-
-        } catch (Exception e) {
-            return new ApiResponse(null, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
-        }
-    }
 
     public ApiResponse findByStartupper() {
         try {

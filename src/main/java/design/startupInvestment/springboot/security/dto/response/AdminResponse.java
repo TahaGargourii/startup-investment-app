@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
-
 /**
  * Created on Ağustos, 2020
  *
@@ -16,23 +14,12 @@ import java.sql.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class FileResponse {
+public class AdminResponse {
 
-	private String id;
 
-	private String fileName;
+	private Long id;
 
-	private Date dateOfUpload;
-
-	private String field;
-
-	private String fileDownloadUri;
-
-	private String fileType;
-
-	private long size;
-
-	private StartupperResponse startupper;
+	private UserResponse user;
 
 
 }

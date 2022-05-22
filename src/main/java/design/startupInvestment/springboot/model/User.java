@@ -40,5 +40,8 @@ public class User {
 	@OneToOne(mappedBy = "user")
 	private Startupper startupper;
 
+	@OneToOne(mappedBy = "user")
+	private Admin admin;
+
 
 }

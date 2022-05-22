@@ -33,7 +33,7 @@ public class FondController {
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
-    @GetMapping("/fonds/{startupId}/startups")
+    @GetMapping("/fonds/startups/{startupId}")
     public ResponseEntity<ApiResponse> getAllFondsByStartup(@PathVariable("startupId") long startupId) {
         ApiResponse response = fondService.getAllFondsByStartup(startupId);
         return ResponseEntity.status(response.getStatus()).body(response);

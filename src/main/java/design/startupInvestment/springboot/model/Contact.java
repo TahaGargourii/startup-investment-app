@@ -1,6 +1,7 @@
 package design.startupInvestment.springboot.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,11 +32,13 @@ public class Contact {
 
     private String email;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "startupper_id", nullable = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Startupper startupper;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "investor_id", nullable = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
