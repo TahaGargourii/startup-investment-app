@@ -32,15 +32,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) {
 
-		final AuthenticatedUserDto authenticatedUser = userService.findAuthenticatedUserByUsername(username);
+		final design.startupInvestment.springboot.model.User user = userService.findByUsername(username);
 
-		if (Objects.isNull(authenticatedUser)) {
+		if (Objects.isNull(user)) {
 			throw new UsernameNotFoundException(USERNAME_OR_PASSWORD_INVALID);
 		}
 
-		final String authenticatedUsername = authenticatedUser.getUsername();
-		final String authenticatedPassword = authenticatedUser.getPassword();
-		final UserRole userRole = authenticatedUser.getUserRole();
+		final String authenticatedUsername = user.getUsername();
+		final String authenticatedPassword = user.getPassword();
+		final UserRole userRole = user.getUserRole();
 		final SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(userRole.name());
 
 		return new User(authenticatedUsername, authenticatedPassword, Collections.singletonList(grantedAuthority));

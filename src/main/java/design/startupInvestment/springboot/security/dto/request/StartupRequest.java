@@ -19,8 +19,6 @@ public class StartupRequest {
     @NotEmpty(message = "{startupName_not_empty}")
     private String name;
 
-    private StartupperRequest startupper;
-
 }
 
 

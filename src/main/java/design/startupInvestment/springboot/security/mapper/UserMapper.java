@@ -3,6 +3,7 @@ package design.startupInvestment.springboot.security.mapper;
 import design.startupInvestment.springboot.model.User;
 import design.startupInvestment.springboot.security.dto.AuthenticatedUserDto;
 import design.startupInvestment.springboot.security.dto.request.RegistrationRequest;
+import design.startupInvestment.springboot.security.dto.response.UserResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
@@ -19,7 +20,7 @@ public interface UserMapper {
 
 	User convertToUser(RegistrationRequest registrationRequest);
 
-	AuthenticatedUserDto convertToAuthenticatedUserDto(User user);
+	UserResponse convertToUserResponse(User user);
 
 	User convertToUser(AuthenticatedUserDto authenticatedUserDto);
 

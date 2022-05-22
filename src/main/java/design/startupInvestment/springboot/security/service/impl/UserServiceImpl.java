@@ -61,13 +61,13 @@ public class UserServiceImpl implements UserService {
 		return user;
 	}
 
-	@Override
+	/*@Override
 	public AuthenticatedUserDto findAuthenticatedUserByUsername(String username) {
 
 		final User user = findByUsername(username);
 
 		return UserMapper.INSTANCE.convertToAuthenticatedUserDto(user);
-	}
+	}*/
 
 	@Override
 	public User getConnectedInvestor() {

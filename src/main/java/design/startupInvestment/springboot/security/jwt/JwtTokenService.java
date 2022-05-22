@@ -4,6 +4,7 @@ import design.startupInvestment.springboot.model.User;
 import design.startupInvestment.springboot.security.dto.AuthenticatedUserDto;
 import design.startupInvestment.springboot.security.dto.request.LoginRequest;
 import design.startupInvestment.springboot.security.dto.response.LoginResponse;
+import design.startupInvestment.springboot.security.dto.response.UserResponse;
 import design.startupInvestment.springboot.security.mapper.UserMapper;
 import design.startupInvestment.springboot.security.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -37,11 +38,13 @@ public class JwtTokenService {
 
 		authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
-		final AuthenticatedUserDto authenticatedUserDto = userService.findAuthenticatedUserByUsername(username);
+		final User user = userService.findByUsername(username);
 
-		final User user = UserMapper.INSTANCE.convertToUser(authenticatedUserDto);
+		//final User user = UserMapper.INSTANCE.convertToUser(authenticatedUserDto);
 		final String token = jwtTokenManager.generateToken(user);
-		LoginResponse loginResponse = new LoginResponse(token, user);
+
+		UserResponse userResponse = UserMapper.INSTANCE.convertToUserResponse(user);
+		LoginResponse loginResponse = new LoginResponse(token, userResponse);
 
 		log.info(" {} has successfully logged in!", user.getUsername());
 

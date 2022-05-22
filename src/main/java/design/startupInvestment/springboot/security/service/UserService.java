@@ -15,7 +15,7 @@ public interface UserService {
 
     User registration(RegistrationRequest registrationRequest);
 
-    AuthenticatedUserDto findAuthenticatedUserByUsername(String username);
+   /// AuthenticatedUserDto findAuthenticatedUserByUsername(String username);
 
     User getConnectedInvestor();
 
