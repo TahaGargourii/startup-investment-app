@@ -81,7 +81,7 @@ public class StartupperDetailsServiceImpl implements StartupperService {
             newUser.setUserRole(UserRole.STARTUPPER);
             Startupper startupper = startupperRepository.save(new Startupper(newUser));
 
-            return new ApiResponse(startupper, "USER IS NOT AN STARTUP", HttpStatus.CREATED, LocalDateTime.now());
+            return new ApiResponse(startupper, "USER IS NOT AN STARTUP", HttpStatus.OK, LocalDateTime.now());
 
         } catch (Exception e) {
             return new ApiResponse(null, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());

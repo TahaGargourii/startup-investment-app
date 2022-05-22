@@ -28,7 +28,7 @@ public class RegistrationController {
 
 		final User registrationResponse = userService.registration(registrationRequest);
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(registrationResponse);
+		return ResponseEntity.status(HttpStatus.OK).body(registrationResponse);
 	}
 
 }

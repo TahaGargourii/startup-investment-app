@@ -81,7 +81,7 @@ public class AdminDetailsServiceImpl implements AdminService {
             newUser.setUserRole(UserRole.ADMIN);
             Admin admin = adminRepository.save(new Admin(newUser));
 
-            return new ApiResponse(admin, null, HttpStatus.CREATED, LocalDateTime.now());
+            return new ApiResponse(admin, null, HttpStatus.OK, LocalDateTime.now());
 
         } catch (Exception e) {
             return new ApiResponse(null, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
