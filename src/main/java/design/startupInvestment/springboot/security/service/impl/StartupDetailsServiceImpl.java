@@ -70,6 +70,33 @@ public class StartupDetailsServiceImpl implements StartupService {
     }
 
 
+    public ApiResponse getAllStartupsByStartupper() {
+        try {
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            design.startupInvestment.springboot.model.User user = userRepository.findByUsername(((UserDetails) principal).getUsername());
+            List<StartupResponse> startupResponses = new ArrayList<>();
+            if (user != null) {
+                if (user.getStartupper() != null && user.getUserRole().equals(UserRole.STARTUPPER)) {
+                    List<Startup> startups = startupRepository.findAllByStartupper(user.getStartupper());
+                    if (!startups.isEmpty()) {
+                        for (Startup startup : startups) {
+                            StartupResponse startupResponse = StartupMapper.INSTANCE.convertToStartupResponse(startup);
+                            startupResponses.add(startupResponse);
+                        }
+                        return new ApiResponse(startupResponses, null, HttpStatus.OK, LocalDateTime.now());
+                    }
+                } else {
+                    return new ApiResponse(null, "USER IS NOT AN STARTUP", HttpStatus.BAD_REQUEST, LocalDateTime.now());
+                }
+            }
+            return new ApiResponse(null, null, HttpStatus.NO_CONTENT, LocalDateTime.now());
+        } catch (Exception e) {
+            return new ApiResponse(null, "USER IS NOT AN STARTUP", HttpStatus.BAD_REQUEST, LocalDateTime.now());
+
+        }
+    }
+
+
     public ApiResponse getStartupById(long id) {
         Optional<Startup> startupData = startupRepository.findById(id);
 

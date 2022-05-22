@@ -7,6 +7,7 @@ public interface StartupService {
 
     ApiResponse getAllStartups();
 
+    ApiResponse getAllStartupsByStartupper();
     ApiResponse getStartupById(long id);
 
     ApiResponse createStartup(StartupRequest startupRequest);

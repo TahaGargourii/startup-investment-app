@@ -79,7 +79,7 @@ public class FondDetailsServiceImpl implements FondService {
             if (userInvestor != null) {
                 fond = fondRepository.findFondByIdAndInvestor(id, userInvestor.getInvestor());
             } else if (userStartupper != null) {
-                startup = startupRepository.findStartupByStartupper(userStartupper.getStartupper());
+                startup = startupRepository.findByStartupper(userStartupper.getStartupper());
                 fond = fondRepository.findFondByIdAndStartup(id, startup);
             } else {
                 return new ApiResponse(null, "UNEXISTANT USER", HttpStatus.BAD_REQUEST, LocalDateTime.now());
@@ -98,7 +98,7 @@ public class FondDetailsServiceImpl implements FondService {
     public ApiResponse createFondByStartup(FondRequest fondRequest) {
         try {
             User user = userService.getConnectedStartupper();
-            Startup userStartup = startupRepository.findStartupByStartupper(user.getStartupper());
+
               if (user != null) {
             Optional<Startup> startup = startupRepository.findById(fondRequest.getStartupId());
             Optional<Investor> investor = investorRepository.findById(fondRequest.getInvestorId());

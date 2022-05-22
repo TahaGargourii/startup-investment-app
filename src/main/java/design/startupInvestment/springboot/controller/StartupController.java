@@ -16,9 +16,15 @@ public class StartupController {
 	@Autowired
 	StartupService startupService;
 
-	@GetMapping("/startups")
+/*	@GetMapping("/startups")
 	public ResponseEntity<ApiResponse> getAllStartups() {
 		ApiResponse apiResponse = startupService.getAllStartups();
+		return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
+	}*/
+
+	@GetMapping("/startups")
+	public ResponseEntity<ApiResponse> getAllStartupsByStartupper() {
+		ApiResponse apiResponse = startupService.getAllStartupsByStartupper();
 		return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
 	}
 
