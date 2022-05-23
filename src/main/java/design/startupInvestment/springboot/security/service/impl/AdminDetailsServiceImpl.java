@@ -49,7 +49,7 @@ public class AdminDetailsServiceImpl implements AdminService {
                 AdminResponse adminsResponse = AdminMapper.INSTANCE.convertToAdminResponse(admin);
                 adminsResponses.add(adminsResponse);
             }
-            return new ApiResponse(adminsResponses, "USER IS NOT AN STARTUP", HttpStatus.OK, LocalDateTime.now());
+            return new ApiResponse(adminsResponses, "THERE IS NO ADMINS", HttpStatus.OK, LocalDateTime.now());
         } catch (Exception e) {
             return new ApiResponse(null, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
         }
@@ -61,9 +61,9 @@ public class AdminDetailsServiceImpl implements AdminService {
         try {
             if (adminData.isPresent()) {
                 AdminResponse admin = AdminMapper.INSTANCE.convertToAdminResponse(adminData.get());
-                return new ApiResponse(null, "USER IS NOT AN STARTUP", HttpStatus.OK, LocalDateTime.now());
+                return new ApiResponse(admin, null, HttpStatus.OK, LocalDateTime.now());
             } else {
-                return new ApiResponse(null, "USER IS NOT AN STARTUP", HttpStatus.NO_CONTENT, LocalDateTime.now());
+                return new ApiResponse(null, "ADMIN DOES NOT EXIST", HttpStatus.NO_CONTENT, LocalDateTime.now());
             }
         } catch (Exception e) {
             return new ApiResponse(null, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
@@ -93,9 +93,9 @@ public class AdminDetailsServiceImpl implements AdminService {
             Optional<Admin> admin = adminRepository.findById(id);
             if (admin.isPresent()) {
                 adminRepository.deleteById(id);
-                return new ApiResponse(null, "DELETED", HttpStatus.OK, LocalDateTime.now());
+                return new ApiResponse(null, "ADMIN DELETED", HttpStatus.OK, LocalDateTime.now());
             } else {
-                return new ApiResponse(null, "DOES NOT EXIST", HttpStatus.BAD_REQUEST, LocalDateTime.now());
+                return new ApiResponse(null, "ADMIN DOES NOT EXIST", HttpStatus.BAD_REQUEST, LocalDateTime.now());
             }
         } catch (Exception e) {
             return new ApiResponse(null, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
@@ -108,9 +108,9 @@ public class AdminDetailsServiceImpl implements AdminService {
             List<Admin> admins = adminRepository.findAll();
             if (!admins.isEmpty()) {
                 adminRepository.deleteAll();
-                return new ApiResponse(null, "USER IS NOT AN STARTUP", HttpStatus.OK, LocalDateTime.now());
+                return new ApiResponse(null, "ALL ADMINS ARE DELETED", HttpStatus.OK, LocalDateTime.now());
             } else {
-                return new ApiResponse(null, "USER IS NOT AN STARTUP", HttpStatus.NO_CONTENT, LocalDateTime.now());
+                return new ApiResponse(null, "ADMIN DOES NOT EXIST", HttpStatus.NO_CONTENT, LocalDateTime.now());
             }
         } catch (Exception e) {
             return new ApiResponse(null, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());

@@ -11,6 +11,7 @@ import design.startupInvestment.springboot.security.dto.request.StartupRequest;
 import design.startupInvestment.springboot.security.dto.response.StartupResponse;
 import design.startupInvestment.springboot.security.mapper.StartupMapper;
 import design.startupInvestment.springboot.security.service.StartupService;
+import design.startupInvestment.springboot.security.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,8 @@ public class StartupDetailsServiceImpl implements StartupService {
     @Autowired
     StartupperRepository startupperRepository;
 
-
+    @Autowired
+    UserService userService;
     public ApiResponse getAllStartups() {
         try {
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -111,9 +113,8 @@ public class StartupDetailsServiceImpl implements StartupService {
     public ApiResponse createStartup(StartupRequest startupRequest) {
         final ApiResponse response = new ApiResponse(null, "STARTUP DOES NOT EXIST", HttpStatus.BAD_REQUEST, LocalDateTime.now());
         try {
-            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            design.startupInvestment.springboot.model.User user = userRepository.findByUsername(((UserDetails) principal).getUsername());
-            if (user != null && user.getUserRole().equals(UserRole.STARTUPPER) && user.getStartupper() != null) {
+            User user = userService.getConnectedStartupper();
+            if (user != null) {
                 Startup startup = StartupMapper.INSTANCE.convertToStartup(startupRequest);
                 startup.setStartupper(user.getStartupper());
                 Startup _startup = startupRepository.save(startup);

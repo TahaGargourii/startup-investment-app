@@ -2,13 +2,17 @@ package design.startupInvestment.springboot.security.service.impl;
 
 import design.startupInvestment.springboot.exceptions.ApiResponse;
 import design.startupInvestment.springboot.model.Investor;
+import design.startupInvestment.springboot.model.Portfolio;
 import design.startupInvestment.springboot.model.User;
 import design.startupInvestment.springboot.model.UserRole;
 import design.startupInvestment.springboot.repository.InvestorRepository;
+import design.startupInvestment.springboot.repository.PortfolioRepository;
 import design.startupInvestment.springboot.repository.UserRepository;
 import design.startupInvestment.springboot.security.dto.request.InvestorRequest;
+import design.startupInvestment.springboot.security.dto.request.PortfolioRequest;
 import design.startupInvestment.springboot.security.dto.response.InvestorResponse;
 import design.startupInvestment.springboot.security.mapper.InvestorMapper;
+import design.startupInvestment.springboot.security.mapper.PortfolioMapper;
 import design.startupInvestment.springboot.security.service.InvestorService;
 import design.startupInvestment.springboot.security.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +44,9 @@ public class InvestorDetailsServiceImpl implements InvestorService {
     InvestorRepository investorRepository;
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    PortfolioRepository portfolioRepository;
 
     public ApiResponse getAllInvestors() {
         try {
@@ -80,6 +87,11 @@ public class InvestorDetailsServiceImpl implements InvestorService {
             newUser.setUserRole(UserRole.INVESTOR);
             Investor investor = InvestorMapper.INSTANCE.convertToInvestor(investorRequest);
             investor.setUser(newUser);
+            PortfolioRequest portfolioRequest = new PortfolioRequest(0);
+            Portfolio portfolio = PortfolioMapper.INSTANCE.convertToPortfolio(portfolioRequest);
+            portfolio.setInvestor(investor);
+            portfolioRepository.save(portfolio);
+            investor.setPortfolio(portfolio);
             investorRepository.save(investor);
             return new ApiResponse(investor, "INVESTOR CREATED", HttpStatus.OK, LocalDateTime.now());
         } catch (Exception e) {

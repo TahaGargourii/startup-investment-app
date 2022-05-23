@@ -2,10 +2,7 @@ package design.startupInvestment.springboot.security.service.impl;
 
 import design.startupInvestment.springboot.exceptions.ApiResponse;
 import design.startupInvestment.springboot.model.*;
-import design.startupInvestment.springboot.repository.FondRepository;
-import design.startupInvestment.springboot.repository.InvestorRepository;
-import design.startupInvestment.springboot.repository.StartupRepository;
-import design.startupInvestment.springboot.repository.UserRepository;
+import design.startupInvestment.springboot.repository.*;
 import design.startupInvestment.springboot.security.dto.request.FondRequest;
 import design.startupInvestment.springboot.security.dto.response.FondResponse;
 import design.startupInvestment.springboot.security.mapper.FondMapper;
@@ -44,6 +41,9 @@ public class FondDetailsServiceImpl implements FondService {
     UserRepository userRepository;
     @Autowired
     UserService userService;
+
+    @Autowired
+    PortfolioRepository portfolioRepository;
 
     public ApiResponse getAllFonds(String type, String capTable) {
         try {
@@ -105,11 +105,15 @@ public class FondDetailsServiceImpl implements FondService {
             Fond fond = FondMapper.INSTANCE.convertToFond(fondRequest);
             fond.setStartup(startup.get());
             fond.setInvestor(investor.get());
+            int size = investor.get().getPortfolio().getSize();
+            investor.get().getPortfolio().setSize(size++);
+        //    startup.get().getPortfolio().setSize(size++);
+            portfolioRepository.save(investor.get().getPortfolio());
             startup.get().setPortfolio(investor.get().getPortfolio());
             fondRepository.save(fond);
             return new ApiResponse(fond, "FOND CREATED", HttpStatus.OK, LocalDateTime.now());
             } else {
-                return new ApiResponse(null, "USER IS NOT AN INVESTOR", HttpStatus.BAD_REQUEST, LocalDateTime.now());
+                return new ApiResponse(null, "USER IS NOT AN STARTUPPER", HttpStatus.BAD_REQUEST, LocalDateTime.now());
             }
         } catch (Exception e) {
             return new ApiResponse(null, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
@@ -134,7 +138,7 @@ public class FondDetailsServiceImpl implements FondService {
                     return new ApiResponse(fondResponses, null, HttpStatus.OK, LocalDateTime.now());
                 }
             } else {
-                return new ApiResponse(null, "USER IS NOT AN INVESTOR", HttpStatus.BAD_REQUEST, LocalDateTime.now());
+                return new ApiResponse(null, "USER IS NOT AN STARTUPPER", HttpStatus.BAD_REQUEST, LocalDateTime.now());
             }
 
             return new ApiResponse(null, null, HttpStatus.NO_CONTENT, LocalDateTime.now());
