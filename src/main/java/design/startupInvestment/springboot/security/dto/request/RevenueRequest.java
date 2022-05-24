@@ -14,14 +14,15 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TeamRequest {
+public class RevenueRequest {
 
-	@NotEmpty(message = "{startupName_not_empty}")
-	private String field;
+	int amount;
 
-	private int  spendingAmount;
+	String month;
 
-	}
+	private long startupId;
+
+}
 
 
 

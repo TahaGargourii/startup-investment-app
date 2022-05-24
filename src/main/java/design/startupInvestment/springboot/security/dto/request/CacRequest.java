@@ -1,5 +1,6 @@
 package design.startupInvestment.springboot.security.dto.request;
 
+import design.startupInvestment.springboot.model.Startup;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,12 +15,15 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TeamRequest {
+public class CacRequest {
 
-	@NotEmpty(message = "{startupName_not_empty}")
-	private String field;
 
-	private int  spendingAmount;
+
+	int amount;
+
+	String month;
+
+	private long startupId;
 
 	}
 

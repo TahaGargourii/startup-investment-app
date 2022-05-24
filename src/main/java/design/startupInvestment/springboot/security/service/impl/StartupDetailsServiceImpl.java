@@ -52,25 +52,23 @@ public class StartupDetailsServiceImpl implements StartupService {
             List<StartupResponse> startupResponses = new ArrayList<>();
             if (user != null) {
                 if (user.getStartupper() != null && user.getUserRole().equals(UserRole.STARTUPPER)) {
-            List<Startup> startups = startupRepository.findAll();
-            if (!startups.isEmpty()) {
-                for (Startup startup : startups) {
-                    StartupResponse startupResponse = StartupMapper.INSTANCE.convertToStartupResponse(startup);
-                    startupResponses.add(startupResponse);
-                }
-                return new ApiResponse(startupResponses, null, HttpStatus.OK, LocalDateTime.now());
-            }
+                    List<Startup> startups = startupRepository.findAll();
+                    if (!startups.isEmpty()) {
+                        for (Startup startup : startups) {
+                            StartupResponse startupResponse = StartupMapper.INSTANCE.convertToStartupResponse(startup);
+                            startupResponses.add(startupResponse);
+                        }
+                        return new ApiResponse(startupResponses, null, HttpStatus.OK, LocalDateTime.now());
+                    }
                 } else {
                     return new ApiResponse(null, "USER IS NOT AN STARTUP", HttpStatus.BAD_REQUEST, LocalDateTime.now());
                 }
-                }
+            }
             return new ApiResponse(null, null, HttpStatus.NO_CONTENT, LocalDateTime.now());
         } catch (Exception e) {
             return new ApiResponse(null, "USER IS NOT AN STARTUP", HttpStatus.BAD_REQUEST, LocalDateTime.now());
-
         }
     }
-
 
     public ApiResponse getAllStartupsByStartupper() {
         try {
@@ -94,10 +92,8 @@ public class StartupDetailsServiceImpl implements StartupService {
             return new ApiResponse(null, null, HttpStatus.NO_CONTENT, LocalDateTime.now());
         } catch (Exception e) {
             return new ApiResponse(null, "USER IS NOT AN STARTUP", HttpStatus.BAD_REQUEST, LocalDateTime.now());
-
         }
     }
-
 
     public ApiResponse getStartupById(long id) {
         Optional<Startup> startupData = startupRepository.findById(id);
@@ -122,7 +118,6 @@ public class StartupDetailsServiceImpl implements StartupService {
             } else {
                 return new ApiResponse(null, null, HttpStatus.OK, LocalDateTime.now());
             }
-
         } catch (Exception e) {
             return null;
         }
@@ -139,7 +134,6 @@ public class StartupDetailsServiceImpl implements StartupService {
             } else {
                 return new ApiResponse(startup, null, HttpStatus.OK, LocalDateTime.now());
             }
-
         } catch (Exception e) {
             return new ApiResponse(null, null, HttpStatus.OK, LocalDateTime.now());
         }
@@ -186,4 +180,5 @@ public class StartupDetailsServiceImpl implements StartupService {
             return new ApiResponse(null, null, HttpStatus.OK, LocalDateTime.now());
         }
     }
+
 }

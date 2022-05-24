@@ -1,5 +1,6 @@
 package design.startupInvestment.springboot.security.dto.response;
 
+import design.startupInvestment.springboot.model.Startup;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,12 +15,13 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TeamResponse {
-
+public class RevenueResponse {
 
 	private Long id;
 
-	private String Field;
+	int amount;
 
-	private int  spendingAmount;
+	String month;
+
+	private Startup startup;
 }

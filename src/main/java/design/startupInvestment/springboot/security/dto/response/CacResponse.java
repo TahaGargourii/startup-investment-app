@@ -1,9 +1,15 @@
 package design.startupInvestment.springboot.security.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import design.startupInvestment.springboot.model.Startup;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import javax.persistence.*;
 
 /**
  * Created on Ağustos, 2020
@@ -14,12 +20,13 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TeamResponse {
-
+public class CacResponse {
 
 	private Long id;
 
-	private String Field;
+	int amount;
 
-	private int  spendingAmount;
+	String month;
+
+	private Startup startup;
 }

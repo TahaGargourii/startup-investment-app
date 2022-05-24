@@ -20,9 +20,9 @@ public class Team {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-
     private String field;
+
+    private int  spendingAmount;
 
 
 }
