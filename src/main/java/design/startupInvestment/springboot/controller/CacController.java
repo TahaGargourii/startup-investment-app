@@ -18,7 +18,7 @@ public class CacController {
     CacService cacService;
 
     @GetMapping("/cacsByStartup")
-    public ResponseEntity<ApiResponse> getAllCacsByStartup(@PathVariable("startupId") long startupId) {
+    public ResponseEntity<ApiResponse> getAllCacsByStartup(@RequestParam("startupId") long startupId) {
         ApiResponse apiResponse = cacService.getAllCacsByStartup(startupId);
         return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
     }
@@ -35,7 +35,7 @@ public class CacController {
         return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
     }*/
 
-    @PostMapping("/cacs")
+    @PostMapping("")
     public ResponseEntity<ApiResponse> createCac(@RequestBody CacRequest cacRequest) {
         ApiResponse apiResponse = cacService.createCac(cacRequest);
         return new ResponseEntity<>(apiResponse, apiResponse.getStatus());

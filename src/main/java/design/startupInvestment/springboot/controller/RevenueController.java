@@ -24,7 +24,7 @@ public class RevenueController {
     }*/
 
     @GetMapping("/revenuesByStartup")
-    public ResponseEntity<ApiResponse> getAllRevenuesByStartup(@PathVariable("startupId") long startupId) {
+    public ResponseEntity<ApiResponse> getAllRevenuesByStartup(@RequestParam("startupId") long startupId) {
         ApiResponse apiResponse = revenueService.getAllRevenuesByStartup(startupId);
         return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
     }
@@ -35,13 +35,13 @@ public class RevenueController {
         return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
     }
 
-    @GetMapping("/revenues/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> getRevenueById(@PathVariable("id") long id) {
         ApiResponse apiResponse = revenueService.getRevenueById(id);
         return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
     }
 
-    @PostMapping("/revenues")
+    @PostMapping("")
     public ResponseEntity<ApiResponse> createRevenue(@RequestBody RevenueRequest revenueRequest) {
         ApiResponse apiResponse = revenueService.createRevenue(revenueRequest);
         return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
