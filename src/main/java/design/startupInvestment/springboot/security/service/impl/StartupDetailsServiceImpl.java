@@ -110,6 +110,7 @@ public class StartupDetailsServiceImpl implements StartupService {
         final ApiResponse response = new ApiResponse(null, "STARTUP DOES NOT EXIST", HttpStatus.BAD_REQUEST, LocalDateTime.now());
         try {
             User user = userService.getConnectedStartupper();
+            /// hello
             if (user != null) {
                 Startup startup = StartupMapper.INSTANCE.convertToStartup(startupRequest);
                 startup.setStartupper(user.getStartupper());
