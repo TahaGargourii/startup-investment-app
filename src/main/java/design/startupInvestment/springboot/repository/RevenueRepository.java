@@ -13,7 +13,7 @@ public interface RevenueRepository extends JpaRepository<Revenue, Long> {
 
 
     List<Revenue> findByStartupAndMonth(Startup startup, String month);
-
+    List<Revenue> findByStartupAndYear(Startup startup, String year);
 }
 
 

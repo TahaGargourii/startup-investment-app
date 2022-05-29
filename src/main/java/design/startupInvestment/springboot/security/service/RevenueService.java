@@ -7,7 +7,7 @@ public interface RevenueService {
 
     ApiResponse getAllRevenuesByStartup(long startupId);
 
-    ApiResponse getAllRevenuesByStartupAndMonth(long startupId, String month);
+    ApiResponse getAllRevenuesByStartupAndYear(long startupId, String year);
 
     ApiResponse getRevenueById(long id);
 

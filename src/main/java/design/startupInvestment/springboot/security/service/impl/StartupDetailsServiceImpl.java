@@ -8,6 +8,7 @@ import design.startupInvestment.springboot.repository.StartupRepository;
 import design.startupInvestment.springboot.repository.StartupperRepository;
 import design.startupInvestment.springboot.repository.UserRepository;
 import design.startupInvestment.springboot.security.dto.request.StartupRequest;
+import design.startupInvestment.springboot.security.dto.response.RevenueResponse;
 import design.startupInvestment.springboot.security.dto.response.StartupResponse;
 import design.startupInvestment.springboot.security.mapper.StartupMapper;
 import design.startupInvestment.springboot.security.service.StartupService;
@@ -69,6 +70,33 @@ public class StartupDetailsServiceImpl implements StartupService {
             return new ApiResponse(null, "USER IS NOT AN STARTUP", HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
     }
+
+    public ApiResponse getAllStartupsByPortfolio() {
+        try {
+            List<StartupResponse> startupResponses = new ArrayList<>();
+            User user = userService.getConnectedInvestor();
+            if (user != null && user.getInvestor().getPortfolio() != null) {
+
+                    List<Startup> startups = startupRepository.findAllByPortfolio(user.getInvestor().getPortfolio());
+                    if (!startups.isEmpty()) {
+                        for (Startup startup : startups) {
+                            StartupResponse startupResponse = StartupMapper.INSTANCE.convertToStartupResponse(startup);
+                            startupResponses.add(startupResponse);
+                        }
+                        return new ApiResponse(startupResponses, null, HttpStatus.OK, LocalDateTime.now());
+                    }
+                } else {
+                    return new ApiResponse(null, "USER IS NOT AN STARTUP", HttpStatus.BAD_REQUEST, LocalDateTime.now());
+                }
+
+            return new ApiResponse(null, null, HttpStatus.NO_CONTENT, LocalDateTime.now());
+        } catch (Exception e) {
+            return new ApiResponse(null, "USER IS NOT AN STARTUP", HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
+
+    }
+
+
 
     public ApiResponse getAllStartupsByStartupper() {
         try {

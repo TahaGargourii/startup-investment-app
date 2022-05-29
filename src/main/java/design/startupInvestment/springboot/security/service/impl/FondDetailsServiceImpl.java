@@ -169,4 +169,28 @@ public class FondDetailsServiceImpl implements FondService {
         }
     }
 
+
+    public ApiResponse getSommeFondsByInvestor() {
+        try {
+            User user = userService.getConnectedInvestor();
+            List<FondResponse> fondResponses = new ArrayList<>();
+            int sommeFonds = 0;
+            if (user != null) {
+                List<Fond> fonds = fondRepository.findFondByInvestor(user.getInvestor());
+                if (!fonds.isEmpty()) {
+                    for (Fond fond : fonds) {
+                        sommeFonds=+ fond.getAmount();
+                     /*   FondResponse fondResponse = FondMapper.INSTANCE.convertToFondResponse(fond);
+                        fondResponses.add(fondResponse);*/
+                    }
+                    return new ApiResponse(sommeFonds, null, HttpStatus.OK, LocalDateTime.now());
+                }
+            } else {
+                return new ApiResponse(null, "USER IS NOT AN INVESTOR", HttpStatus.BAD_REQUEST, LocalDateTime.now());
+            }
+            return new ApiResponse(null, null, HttpStatus.NO_CONTENT, LocalDateTime.now());
+        } catch (Exception e) {
+            return new ApiResponse(null, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
+        }
+    }
 }

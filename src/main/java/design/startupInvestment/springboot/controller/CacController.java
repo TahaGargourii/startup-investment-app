@@ -24,8 +24,8 @@ public class CacController {
     }
 
     @GetMapping("/cacsByStartupAndMonth")
-    public ResponseEntity<ApiResponse> getAllCacsByStartupAndMonth(@RequestParam(required = false) long startupId, @RequestParam(required = false) String month) {
-        ApiResponse apiResponse = cacService.getAllCacsByStartupAndMonth(startupId,month);
+    public ResponseEntity<ApiResponse> getAllCacsByStartupAndYear(@RequestParam(required = false) long startupId, @RequestParam(required = false) String year) {
+        ApiResponse apiResponse = cacService.getAllCacsByStartupAndYear(startupId,year);
         return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
     }
 /*

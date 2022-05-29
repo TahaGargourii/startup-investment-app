@@ -78,7 +78,7 @@ public class RevenueDetailsServiceImpl implements RevenueService {
     }
 
     @Override
-    public ApiResponse getAllRevenuesByStartupAndMonth(long startupId, String month) {
+    public ApiResponse getAllRevenuesByStartupAndYear(long startupId, String year) {
         try {
             List<RevenueResponse> revenueResponses = new ArrayList<>();
             User user = userService.getConnectedStartupper();
@@ -87,7 +87,7 @@ public class RevenueDetailsServiceImpl implements RevenueService {
                 if (!startup.isPresent()) {
                     return new ApiResponse(revenueResponses, null, HttpStatus.BAD_REQUEST, LocalDateTime.now());
                 }
-                List<Revenue> revenues = revenueRepository.findByStartupAndMonth(startup.get(),month);
+                List<Revenue> revenues = revenueRepository.findByStartupAndYear(startup.get(),year);
                 if (!revenues.isEmpty()) {
                     for (Revenue revenue : revenues) {
                         RevenueResponse revenueResponse = RevenueMapper.INSTANCE.convertToRevenueResponse(revenue);

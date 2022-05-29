@@ -10,7 +10,7 @@ public interface CacService {
 
     ApiResponse getAllCacsByStartup(long startupId);
 
-    ApiResponse getAllCacsByStartupAndMonth(long startupId, String month);
+    ApiResponse getAllCacsByStartupAndYear(long startupId, String year);
 
 
 

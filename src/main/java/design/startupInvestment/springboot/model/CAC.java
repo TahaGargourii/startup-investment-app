@@ -25,6 +25,8 @@ public class CAC {
 
     String month;
 
+    String year;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "startup_id", nullable = true)

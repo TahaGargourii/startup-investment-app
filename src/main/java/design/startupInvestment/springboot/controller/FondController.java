@@ -45,6 +45,12 @@ public class FondController {
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
+    @GetMapping("/fonds/sommeInvestors")
+    public ResponseEntity<ApiResponse> getSommeFondsByInvestor() {
+        ApiResponse response = fondService.getSommeFondsByInvestor();
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
 }
 
 

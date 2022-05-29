@@ -15,6 +15,7 @@ public interface CacRepository extends JpaRepository<CAC, Long> {
 
     List<CAC> findByStartupAndMonth(Startup startup, String month);
 
+    List<CAC> findByStartupAndYear(Startup startup, String year);
 
 }
 

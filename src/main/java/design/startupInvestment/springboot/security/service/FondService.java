@@ -2,6 +2,7 @@ package design.startupInvestment.springboot.security.service;
 
 import design.startupInvestment.springboot.exceptions.ApiResponse;
 import design.startupInvestment.springboot.security.dto.request.FondRequest;
+import io.swagger.annotations.Api;
 
 public interface FondService {
     ApiResponse getAllFonds(String type, String capTable);
@@ -13,4 +14,6 @@ public interface FondService {
     ApiResponse getAllFondsByStartup(long startupId);
 
     ApiResponse getAllFondsByInvestor();
+
+    ApiResponse getSommeFondsByInvestor();
 }

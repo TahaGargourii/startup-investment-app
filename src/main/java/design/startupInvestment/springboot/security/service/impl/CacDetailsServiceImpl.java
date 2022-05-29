@@ -78,7 +78,7 @@ public class CacDetailsServiceImpl implements CacService {
     }
 
     @Override
-    public ApiResponse getAllCacsByStartupAndMonth(long startupId, String month) {
+    public ApiResponse getAllCacsByStartupAndYear(long startupId, String year) {
         try {
             List<CacResponse> cacResponses = new ArrayList<>();
             User user = userService.getConnectedStartupper();
@@ -87,7 +87,7 @@ public class CacDetailsServiceImpl implements CacService {
                 if (!startup.isPresent()) {
                     return new ApiResponse(cacResponses, null, HttpStatus.BAD_REQUEST, LocalDateTime.now());
                 }
-                List<CAC> cacs = cacRepository.findByStartupAndMonth(startup.get(),month);
+                List<CAC> cacs = cacRepository.findByStartupAndYear(startup.get(),year);
                 if (!cacs.isEmpty()) {
                     for (CAC cac : cacs) {
                         CacResponse cacResponse = CacMapper.INSTANCE.convertToCacResponse(cac);

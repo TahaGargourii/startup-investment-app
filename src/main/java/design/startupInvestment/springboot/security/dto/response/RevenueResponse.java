@@ -23,5 +23,7 @@ public class RevenueResponse {
 
 	String month;
 
+	String year;
+
 	private Startup startup;
 }

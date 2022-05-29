@@ -28,6 +28,12 @@ public class StartupController {
 		return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
 	}
 
+	@GetMapping("/startups/startupsByPortfolio")
+	public ResponseEntity<ApiResponse> getAllStartupsByPortfolio() {
+		ApiResponse apiResponse = startupService.getAllStartupsByPortfolio();
+		return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
+	}
+
 	@GetMapping("/startups/{id}")
 	public ResponseEntity<ApiResponse> getStartupById(@PathVariable("id") long id) {
 		ApiResponse apiResponse = startupService.getStartupById(id);

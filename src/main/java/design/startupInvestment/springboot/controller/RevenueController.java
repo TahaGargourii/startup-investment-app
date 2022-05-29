@@ -30,8 +30,8 @@ public class RevenueController {
     }
 
     @GetMapping("/revenuesByStartupAndMonth")
-    public ResponseEntity<ApiResponse> getAllRevenuesByStartupAndMonth(@RequestParam(required = false) long startupId, @RequestParam(required = false) String month) {
-        ApiResponse apiResponse = revenueService.getAllRevenuesByStartupAndMonth(startupId,month);
+    public ResponseEntity<ApiResponse> getAllRevenuesByStartupAndYear(@RequestParam(required = false) long startupId, @RequestParam(required = false) String year) {
+        ApiResponse apiResponse = revenueService.getAllRevenuesByStartupAndYear(startupId,year);
         return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
     }
 

@@ -1,6 +1,7 @@
 package design.startupInvestment.springboot.security.service;
 
 import design.startupInvestment.springboot.exceptions.ApiResponse;
+import design.startupInvestment.springboot.model.Portfolio;
 import design.startupInvestment.springboot.security.dto.request.StartupRequest;
 
 public interface StartupService {
@@ -9,6 +10,8 @@ public interface StartupService {
 
     ApiResponse getAllStartupsByStartupper();
     ApiResponse getStartupById(long id);
+    ApiResponse getAllStartupsByPortfolio();
+
 
     ApiResponse createStartup(StartupRequest startupRequest);
 

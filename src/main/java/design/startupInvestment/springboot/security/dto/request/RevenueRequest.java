@@ -20,6 +20,8 @@ public class RevenueRequest {
 
 	String month;
 
+	String year;
+
 	private long startupId;
 
 }
